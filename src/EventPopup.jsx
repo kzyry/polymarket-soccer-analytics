@@ -110,13 +110,13 @@ function EventPopup({ event, onClose, priceHistoryData }) {
                     {teamNames.team2}
                   </th>
                 </tr>
-                <tr className="border-t border-primary-lighter">
-                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px] border-l border-primary-lighter">Yes</th>
-                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px]">No</th>
-                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px] border-l border-primary-lighter">Yes</th>
-                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px]">No</th>
-                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px] border-l border-primary-lighter">Yes</th>
-                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px]">No</th>
+                <tr>
+                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px] border-l border-t border-primary-lighter">Yes</th>
+                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px] border-t border-primary-lighter">No</th>
+                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px] border-l border-t border-primary-lighter">Yes</th>
+                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px] border-t border-primary-lighter">No</th>
+                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px] border-l border-t border-primary-lighter">Yes</th>
+                  <th className="text-center px-3 py-1.5 text-gray-500 font-medium text-[10px] border-t border-primary-lighter">No</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-primary-lighter/50">
