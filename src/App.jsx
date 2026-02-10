@@ -73,9 +73,9 @@ function App() {
     <div className="min-h-screen bg-primary text-white">
       {/* Header */}
       <header className="border-b border-primary-lighter">
-        <div className="max-w-[1400px] mx-auto px-6 py-6">
-          <h1 className="text-3xl font-bold mb-2">Polymarket Soccer Analytics</h1>
-          <p className="text-gray-400">
+        <div className="max-w-[1400px] mx-auto px-6 py-5">
+          <h1 className="text-2xl font-bold mb-1.5">Polymarket Soccer Analytics</h1>
+          <p className="text-gray-400 text-sm">
             {filteredEvents.length.toLocaleString()} events •
             ${filteredEvents.reduce((sum, e) => sum + e.volume, 0).toLocaleString()} total volume
           </p>
@@ -83,7 +83,7 @@ function App() {
       </header>
 
       {/* Filters */}
-      <div className="max-w-[1400px] mx-auto px-6 py-6 space-y-4">
+      <div className="max-w-[1400px] mx-auto px-6 py-4 space-y-4">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
           <div className="flex-1">
@@ -92,7 +92,7 @@ function App() {
               placeholder="Search events or outcomes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 bg-primary-light border border-primary-lighter rounded-lg focus:outline-none focus:border-accent text-white placeholder-gray-500"
+              className="w-full px-3 py-2 text-sm bg-primary-light border border-primary-lighter rounded-lg focus:outline-none focus:border-accent text-white placeholder-gray-500"
             />
           </div>
 
@@ -101,7 +101,7 @@ function App() {
             <select
               value={selectedTournament}
               onChange={(e) => setSelectedTournament(e.target.value)}
-              className="w-full px-4 py-3 bg-primary-light border border-primary-lighter rounded-lg focus:outline-none focus:border-accent text-white"
+              className="w-full px-3 py-2 text-sm bg-primary-light border border-primary-lighter rounded-lg focus:outline-none focus:border-accent text-white"
             >
               <option value="all">All Tournaments</option>
               {tournaments.map(tournament => (
@@ -121,50 +121,50 @@ function App() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-primary-lighter">
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Event
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Outcome
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Tournament
                   </th>
-                  <th className="text-right px-6 py-4 text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                  <th className="text-right px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Volume
                   </th>
-                  <th className="text-center px-6 py-4 text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                  <th className="text-center px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Link
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-primary-lighter">
+              <tbody className="divide-y divide-primary-lighter text-sm">
                 {paginatedEvents.map((event) => (
-                  <tr key={event.id} className="hover:bg-primary-lighter/50 transition-colors">
-                    <td className="px-6 py-4">
+                  <tr key={event.id} className="hover:bg-primary-lighter/50 transition-colors h-[36px]">
+                    <td className="px-6 py-2">
                       <div className="text-white font-medium">{event.title}</div>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-900/30 text-green-400">
+                    <td className="px-6 py-2">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-900/30 text-green-400">
                         {event.outcome}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-gray-400">
+                    <td className="px-6 py-2 text-gray-400">
                       {event.series || 'Other'}
                     </td>
-                    <td className="px-6 py-4 text-right font-mono">
+                    <td className="px-6 py-2 text-right font-mono">
                       ${event.volume.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="px-6 py-2 text-center">
                       {event.polymarket_url && (
                         <a
                           href={event.polymarket_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-accent hover:text-accent-hover transition-colors"
+                          className="inline-flex items-center text-accent hover:text-accent-hover transition-colors text-xs"
                         >
                           View
-                          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </a>
@@ -178,8 +178,8 @@ function App() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="border-t border-primary-lighter px-6 py-4 flex items-center justify-between">
-              <div className="text-sm text-gray-400">
+            <div className="border-t border-primary-lighter px-6 py-3 flex items-center justify-between">
+              <div className="text-xs text-gray-400">
                 Page {currentPage} of {totalPages} •
                 Showing {((currentPage - 1) * eventsPerPage) + 1}-{Math.min(currentPage * eventsPerPage, filteredEvents.length)} of {filteredEvents.length.toLocaleString()} events
               </div>
@@ -187,14 +187,14 @@ function App() {
                 <button
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="px-4 py-2 bg-primary-lighter rounded-lg hover:bg-primary-lighter/70 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-sm bg-primary-lighter rounded-lg hover:bg-primary-lighter/70 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-4 py-2 bg-primary-lighter rounded-lg hover:bg-primary-lighter/70 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-sm bg-primary-lighter rounded-lg hover:bg-primary-lighter/70 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Next
                 </button>
