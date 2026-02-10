@@ -9,51 +9,27 @@ function EventPopup({ event, onClose, priceHistoryData }) {
     const eventData = priceHistoryData[event.id]
     if (!eventData) return
 
-    const { team_names, price_history } = eventData
-
-    // Merge all timestamps from all price series
-    const allTimestamps = new Set()
-
-    Object.values(price_history).forEach(marketData => {
-      marketData.yes.forEach(p => allTimestamps.add(p.time))
-      marketData.no.forEach(p => allTimestamps.add(p.time))
-    })
-
-    // Convert to sorted array
-    const timestamps = Array.from(allTimestamps).sort()
-
-    // Create lookup maps for each price series
-    const createPriceMap = (prices) => {
-      const map = {}
-      prices.forEach(p => {
-        map[p.time] = p.price
-      })
-      return map
-    }
-
-    const team1YesMap = createPriceMap(price_history.team1.yes)
-    const team1NoMap = createPriceMap(price_history.team1.no)
-    const drawYesMap = createPriceMap(price_history.draw.yes)
-    const drawNoMap = createPriceMap(price_history.draw.no)
-    const team2YesMap = createPriceMap(price_history.team2.yes)
-    const team2NoMap = createPriceMap(price_history.team2.no)
+    // New optimized format: { n: [team1, draw, team2], p: [[time, y1, n1, yd, nd, y2, n2], ...] }
+    const prices = eventData.p || []
 
     // Build merged table data
-    const merged = timestamps.map(time => ({
-      time,
-      team1Yes: team1YesMap[time] !== undefined ? team1YesMap[time].toFixed(3) : '—',
-      team1No: team1NoMap[time] !== undefined ? team1NoMap[time].toFixed(3) : '—',
-      drawYes: drawYesMap[time] !== undefined ? drawYesMap[time].toFixed(3) : '—',
-      drawNo: drawNoMap[time] !== undefined ? drawNoMap[time].toFixed(3) : '—',
-      team2Yes: team2YesMap[time] !== undefined ? team2YesMap[time].toFixed(3) : '—',
-      team2No: team2NoMap[time] !== undefined ? team2NoMap[time].toFixed(3) : '—',
+    const merged = prices.map(row => ({
+      time: row[0],
+      team1Yes: row[1] !== null ? row[1].toFixed(3) : '—',
+      team1No: row[2] !== null ? row[2].toFixed(3) : '—',
+      drawYes: row[3] !== null ? row[3].toFixed(3) : '—',
+      drawNo: row[4] !== null ? row[4].toFixed(3) : '—',
+      team2Yes: row[5] !== null ? row[5].toFixed(3) : '—',
+      team2No: row[6] !== null ? row[6].toFixed(3) : '—',
     }))
 
     setMergedPrices(merged)
   }, [event.id, priceHistoryData])
 
   const eventData = priceHistoryData?.[event.id]
-  const teamNames = eventData?.team_names || { team1: 'Team 1', draw: 'Draw', team2: 'Team 2' }
+  const teamNames = eventData?.n
+    ? { team1: eventData.n[0], draw: eventData.n[1], team2: eventData.n[2] }
+    : { team1: 'Team 1', draw: 'Draw', team2: 'Team 2' }
 
   // Handle click outside
   const handleBackdropClick = (e) => {
