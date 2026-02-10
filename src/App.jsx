@@ -10,7 +10,7 @@ function App() {
 
   // Load events data
   useEffect(() => {
-    fetch('/events.json')
+    fetch('/polymarket-soccer-analytics/events.json')
       .then(response => response.json())
       .then(data => {
         setEvents(data)
