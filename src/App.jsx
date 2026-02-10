@@ -1,23 +1,29 @@
 import { useState, useEffect, useMemo } from 'react'
+import EventPopup from './EventPopup'
 
 function App() {
   const [events, setEvents] = useState([])
+  const [priceHistoryData, setPriceHistoryData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedTournament, setSelectedTournament] = useState('all')
   const [currentPage, setCurrentPage] = useState(1)
+  const [selectedEvent, setSelectedEvent] = useState(null)
   const eventsPerPage = 500
 
   // Load events data
   useEffect(() => {
-    fetch('/polymarket-soccer-analytics/events.json')
-      .then(response => response.json())
-      .then(data => {
-        setEvents(data)
+    Promise.all([
+      fetch('/polymarket-soccer-analytics/events.json').then(r => r.json()),
+      fetch('/polymarket-soccer-analytics/event_price_history.json').then(r => r.json())
+    ])
+      .then(([eventsData, priceData]) => {
+        setEvents(eventsData)
+        setPriceHistoryData(priceData)
         setLoading(false)
       })
       .catch(error => {
-        console.error('Error loading events:', error)
+        console.error('Error loading data:', error)
         setLoading(false)
       })
   }, [])
@@ -140,7 +146,11 @@ function App() {
               </thead>
               <tbody className="divide-y divide-primary-lighter text-sm">
                 {paginatedEvents.map((event) => (
-                  <tr key={event.id} className="hover:bg-primary-lighter/50 transition-colors h-[36px]">
+                  <tr
+                    key={event.id}
+                    onClick={() => setSelectedEvent(event)}
+                    className="hover:bg-primary-lighter/50 transition-colors h-[36px] cursor-pointer"
+                  >
                     <td className="px-6 py-2">
                       <div className="text-white font-medium">{event.title}</div>
                     </td>
@@ -161,6 +171,7 @@ function App() {
                           href={event.polymarket_url}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
                           className="inline-flex items-center text-accent hover:text-accent-hover transition-colors text-xs"
                         >
                           View
@@ -208,6 +219,15 @@ function App() {
       <footer className="max-w-[1400px] mx-auto px-6 py-8 text-center text-gray-500 text-sm">
         <p>Data from Polymarket API • Updated 2025</p>
       </footer>
+
+      {/* Event Popup */}
+      {selectedEvent && (
+        <EventPopup
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+          priceHistoryData={priceHistoryData}
+        />
+      )}
     </div>
   )
 }
